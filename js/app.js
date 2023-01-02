@@ -20,11 +20,11 @@ const datos = {
   mensaje: ''
 }
 
-inputEmail.addEventListener('blur', (e) => {
+inputEmail.addEventListener('input', (e) => {
   validarEmail(e.target.value) ? validar(e.target.parentElement, e) : mensajeError(MENSAJES_ERROR.EMAIL, e.target.parentElement, e.target.value, e);
 });
 
-inputCopia.addEventListener('blur', (e) => {
+inputCopia.addEventListener('input', (e) => {
   /* validacion con el campo vacio */
   if (e.target.value === '') {
     validar(e.target.parentElement, e);
@@ -38,11 +38,11 @@ inputCopia.addEventListener('blur', (e) => {
   }
 });
 
-inputAsunto.addEventListener('blur', (e) => {
+inputAsunto.addEventListener('input', (e) => {
   e.target.value === '' ? mensajeError(MENSAJES_ERROR.EMAIL, e.target.parentElement, e.target.value, e) : validar(e.target.parentElement, e);
 });
 
-textMensaje.addEventListener('blur', (e) => {
+textMensaje.addEventListener('input', (e) => {
   e.target.value === '' ? mensajeError(MENSAJES_ERROR.EMAIL, e.target.parentElement, e.target.value, e) : validar(e.target.parentElement, e);
 });
 
@@ -117,7 +117,6 @@ const activarBotonEnviar = () => {
  * @param {Event} e evento de los campos
  */
 const enviarEmail = (e) => {
-  alert('enviar');
   e.preventDefault();
   cargador.classList.remove('hidden');
   cargador.classList.add('flex');
