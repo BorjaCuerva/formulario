@@ -3,7 +3,7 @@ const formulario = document.querySelector('#enviar-mail');
 const inputEmail = formulario.querySelector('#email');
 const inputAsunto = formulario.querySelector('#asunto');
 const textMensaje = formulario.querySelector('#mensaje');
-const btnEnviar = formulario.querySelector('#enviar');
+const btnEnviar = document.querySelector('#enviar');
 const btnReset = formulario.querySelector('#resetBtn');
 const cargador = document.querySelector('#cargador');
 const inputCopia = formulario.querySelector('#copia');
@@ -16,7 +16,6 @@ const MENSAJES_ERROR = {
 
 const datos = {
   email: '',
-  copia: '',
   asunto: '',
   mensaje: ''
 }
@@ -26,13 +25,13 @@ inputEmail.addEventListener('blur', (e) => {
 });
 
 inputCopia.addEventListener('blur', (e) => {
+  /* validacion con el campo vacio */
   if (e.target.value === '') {
-    console.log('vacio');
     validar(e.target.parentElement, e);
   } else {
-    console.log('relleno');
+    /* Si el campo esta relleno, entra la validacion del email */
     if (validarEmail(e.target.value)) {
-
+      validar(e.target.parentElement, e);
     } else {
       mensajeError(MENSAJES_ERROR.EMAIL, e.target.parentElement, e.target.value, e);
     }
@@ -47,6 +46,9 @@ textMensaje.addEventListener('blur', (e) => {
   e.target.value === '' ? mensajeError(MENSAJES_ERROR.EMAIL, e.target.parentElement, e.target.value, e) : validar(e.target.parentElement, e);
 });
 
+/* resetea el formulario */
+btnReset.addEventListener('click', () => formulario.reset());
+
 /**
  * Valida que los campos no esten vacios
  * Si el campo valorMensaje esta vacio, cambia el mensaje
@@ -57,7 +59,7 @@ textMensaje.addEventListener('blur', (e) => {
  */
 const mensajeError = (mensaje, referencia, valorMensaje, e) => {
   const mensajeAlerta = referencia.querySelector('.mensajeAlerta');
-  datos[e.target.name] = '';
+  datos[e.target.name] = e.target.value;
   if (mensajeAlerta) mensajeAlerta.remove();
 
   if (valorMensaje === '') {
@@ -100,6 +102,7 @@ const validarEmail = (mail) => {
  * si algun campo es incorrecto, lo desactiva
  */
 const activarBotonEnviar = () => {
+  delete datos.copia;
   if (Object.values(datos).includes('')) {
     btnEnviar.disabled = true;
     btnEnviar.classList.add('opacity-50');
@@ -109,7 +112,12 @@ const activarBotonEnviar = () => {
   }
 }
 
+/**
+ *
+ * @param {Event} e evento de los campos
+ */
 const enviarEmail = (e) => {
+  alert('enviar');
   e.preventDefault();
   cargador.classList.remove('hidden');
   cargador.classList.add('flex');
@@ -126,8 +134,6 @@ const enviarEmail = (e) => {
       mensajeEnviado.remove();
     }, 2000);
   }, 2000);
+  formulario.submit();
 }
-
-formulario.addEventListener('submit', enviarEmail);
-/* resetea el formulario */
-btnReset.addEventListener('click', () => formulario.reset());
+btnEnviar.addEventListener('click', enviarEmail);
