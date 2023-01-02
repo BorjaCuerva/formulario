@@ -103,13 +103,22 @@ const validarEmail = (mail) => {
  */
 const activarBotonEnviar = () => {
   delete datos.copia;
+  const mailValidado = validarEmail(datos.email);
   if (Object.values(datos).includes('')) {
-    btnEnviar.disabled = true;
-    btnEnviar.classList.add('opacity-50');
+    removerClase();
   } else {
-    btnEnviar.disabled = false;
-    btnEnviar.classList.remove('opacity-50');
+    if (mailValidado) {
+      btnEnviar.disabled = false;
+      btnEnviar.classList.remove('opacity-50');
+    } else {
+      removerClase();
+    }
   }
+}
+
+const removerClase = () => {
+  btnEnviar.disabled = true;
+  btnEnviar.classList.add('opacity-50');
 }
 
 /**
